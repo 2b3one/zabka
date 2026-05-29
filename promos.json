@@ -1,30 +1,46 @@
 [
   {
     "nazwa": "Pinsa za 1 żappsa",
-    "opis": "Pinsa Pesto lub Salsiccia za 1 punkt w Żappce",
+    "opis": "Pinsa Pesto lub Salsiccia za 1 punkt w aplikacji Żappka",
+    "pelny_opis": "Limitowana promocja w aplikacji Żappka. W zakładce 'Kupony i nagrody' znajdziesz kupon na Pinsę włoską za 1 żappsa. Po aktywacji masz 7 dni na odbiór w dowolnej Żabce w Polsce. Dostępne smaki: Pesto z bazylią, mozzarellą i pomidorkami cherry oraz Salsiccia z włoską kiełbaską i czerwoną cebulą. Limit: 1 kupon na konto w okresie promocji. Nie łączy się z innymi zniżkami na dania gotowe.",
+    "jak_skrozystac": "1. Otwórz aplikację Żappka na telefonie\n2. Wejdź w zakładkę 'Kupony i nagrody'\n3. Znajdź kafelek 'Pinsa za 1 żappsa' i kliknij 'Aktywuj'\n4. Przy kasie w Żabce zeskanuj kod z aplikacji Żappka PRZED płatnością\n5. Cena automatycznie zmieni się na 0,00zł\n6. Odbierz Pinsę z lodówki",
     "waznosc": "09.06.2026",
     "zrodlo": "Żappka",
-    "status": "ok"
+    "status": "ok",
+    "thumb": "https://www.zabka.pl/sites/default/files/styles/promotion_large/public/2024-05/pinsa_pesto_salsiccia.jpg",
+    "link": "https://www.zabka.pl/strefa-promocji"
   },
   {
-    "nazwa": "Menu Gift Card +40%",
-    "opis": "Doładuj kartę Żabka Menu min. 50zł, dostajesz +40% salda",
+    "nazwa": "Menu Gift Card +40% bonusu",
+    "opis": "Doładuj kartę Żabka Menu min. 50zł, otrzymasz 40% więcej środków",
+    "pelny_opis": "Promocja na karty podarunkowe Żabka Menu. Przy doładowaniu za minimum 50zł przy kasie w dowolnej Żabce, system automatycznie dodaje 40% bonusu do salda karty. Przykłady: wpłacasz 50zł → na karcie masz 70zł. Wpłacasz 100zł → masz 140zł. Środki ważne 12 miesięcy od daty doładowania. Karta działa na wszystkie produkty z oferty 'Na ciepło', dania gotowe, kanapki, sałatki.",
+    "jak_skrozystac": "1. Przy kasie w Żabce powiedz: 'Poproszę doładowanie Menu Gift Card'\n2. Podaj kwotę minimum 50zł (możesz więcej)\n3. Zapłać gotówką, kartą lub BLIK\n4. Bonus 40% naliczy się automatycznie na karcie\n5. Przy kolejnych zakupach pokaż kartę kasjerowi",
     "waznosc": "23.06.2026",
     "zrodlo": "zabka.pl",
-    "status": "ok"
+    "status": "ok",
+    "thumb": "https://www.zabka.pl/sites/default/files/menu-gift-card-promo.jpg",
+    "link": "https://www.zabka.pl/zabka-menu"
   },
   {
-    "nazwa": "Hot Ceny -25%",
-    "opis": "Kupon w Żappce na wybrane produkty",
-    "waznosc": "27.05.2026",
+    "nazwa": "Hot Ceny -25% w Żappce",
+    "opis": "Kupon -25% na wybrane produkty z aktualnej gazetki",
+    "pelny_opis": "W każdy poniedziałek o 6:00 w aplikacji Żappka pojawia się nowy kupon 'Hot Ceny' z rabatem 25% na wyselekcjonowane produkty z aktualnej gazetki promocyjnej. Lista produktów zmienia się co tydzień i obejmuje kategorie: napoje, słodycze, przekąski, produkty śniadaniowe. Kupon jednorazowy, ważny do niedzieli 23:59. Można użyć raz w tygodniu.",
+    "jak_skrozystac": "1. Otwórz Żappka w poniedziałek rano\n2. Zakładka 'Kupony' → znajdź 'Hot Ceny -25%'\n3. Kliknij 'Aktywuj kupon'\n4. Sprawdź listę produktów objętych promocją w opisie kuponu\n5. Dodaj produkty do koszyka w sklepie\n6. Zeskanuj Żappkę przy kasie - rabat naliczy się automatycznie na kwalifikujące się produkty",
+    "waznosc": "01.06.2026",
     "zrodlo": "Żappka",
-    "status": "ok"
+    "status": "ok",
+    "thumb": "https://www.zabka.pl/sites/default/files/hot-ceny-25.jpg",
+    "link": "https://www.zabka.pl/gazetki-promocyjne"
   },
   {
     "nazwa": "Drugi produkt za 1zł",
-    "opis": "Automatycznie przy kasie na oznaczonych produktach",
+    "opis": "Kup 2 oznaczone produkty, drugi płacisz tylko 1zł",
+    "pelny_opis": "Stała akcja promocyjna w Żabce. Na półkach znajdziesz produkty oznaczone żółtą naklejką '2. produkt za 1zł'. Kupując 2 sztuki tego samego produktu (lub z tej samej grupy), za drugą sztukę płacisz tylko 1zł. Działa na napoje 500ml, batony, chipsy 130-140g, lody na patyku. Promocja nalicza się automatycznie przy kasie - nie wymaga kuponu ani Żappki.",
+    "jak_skrozystac": "1. Znajdź na półce produkty z żółtą naklejką '2. produkt za 1zł'\n2. Weź 2 sztuki do koszyka\n3. Przy kasie cena automatycznie się przeliczy\n4. Zapłać - nie musisz nic aktywować",
     "waznosc": "Do odwołania",
     "zrodlo": "gazetka",
-    "status": "ok"
+    "status": "ok",
+    "thumb": "https://www.zabka.pl/sites/default/files/drugi-za-zlotowke.jpg",
+    "link": "https://www.zabka.pl/promocje"
   }
 ]
