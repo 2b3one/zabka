@@ -1,0 +1,30 @@
+[
+  {
+    "nazwa": "Pinsa za 1 żappsa",
+    "opis": "Pinsa Pesto lub Salsiccia za 1 punkt w Żappce",
+    "waznosc": "09.06.2026",
+    "zrodlo": "Żappka",
+    "status": "ok"
+  },
+  {
+    "nazwa": "Menu Gift Card +40%",
+    "opis": "Doładuj kartę Żabka Menu min. 50zł, dostajesz +40% salda",
+    "waznosc": "23.06.2026",
+    "zrodlo": "zabka.pl",
+    "status": "ok"
+  },
+  {
+    "nazwa": "Hot Ceny -25%",
+    "opis": "Kupon w Żappce na wybrane produkty",
+    "waznosc": "27.05.2026",
+    "zrodlo": "Żappka",
+    "status": "ok"
+  },
+  {
+    "nazwa": "Drugi produkt za 1zł",
+    "opis": "Automatycznie przy kasie na oznaczonych produktach",
+    "waznosc": "Do odwołania",
+    "zrodlo": "gazetka",
+    "status": "ok"
+  }
+]

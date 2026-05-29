@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Żabka Bezpieczny Dashboard Online</title>
+<style>
+:root{--bg:#f5f5f5;--card:#fff;--text:#111;--green:#16a34a;--yellow:#eab308;--red:#dc2626;--border:#e5e5e5}
+[data-theme="dark"]{--bg:#111;--card:#1f1f1f;--text:#f5f5f5;--border:#333}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);padding:16px;line-height:1.5}
+.container{max-width:1200px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+h1{font-size:28px;margin-bottom:8px}h2{font-size:20px;margin:16px 0 12px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.btn{background:var(--green);color:#fff;border:none;padding:12px 16px;border-radius:8px;cursor:pointer;font-size:16px;min-height:44px}
+.btn-secondary{background:#6b7280}.btn:hover{opacity:.9}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:16px;min-height:44px}
+table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:8px;text-align:left;border-bottom:1px solid var(--border)}
+.badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600}
+.badge-green{background:#dcfce7;color:#166534}.badge-red{background:#fee2e2;color:#991b1b}.badge-yellow{background:#fef9c3;color:#854d0e}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.status{font-size:14px;color:#6b7280}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div><h1>🐸 Żabka Bezpieczny Dashboard</h1><div class="status" id="status">Ładowanie...</div></div>
+    <button class="btn btn-secondary" id="theme">🌓 Tryb</button>
+  </div>
+
+  <div class="card">
+    <h2>Oficjalne Promocje Żabki</h2>
+    <button class="btn" id="refresh">🔄 Odśwież dane</button>
+    <div id="promos" class="grid" style="margin-top:16px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Weryfikator Kodów z Forów</h2>
+    <textarea id="codeInput" rows="3" placeholder="Wklej kod lub link z FB/IG/Pepper..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+      <button class="btn" id="verify">Zweryfikuj</button>
+      <button class="btn btn-secondary" id="testSafe">Test bezpieczny</button>
+      <button class="btn btn-secondary" id="testPhish">Test phishing</button>
+    </div>
+    <div id="result" style="margin-top:16px"></div>
+  </div>
+
+  <div class="card">
+    <h2>Kalkulator Optymalizacji Żappsów</h2>
+    <select id="budget"><option value="1000">10 zł</option><option value="2000">20 zł</option><option value="3000">30 zł</option><option value="4000">40 zł</option><option value="5000">50 zł</option></select>
+    <button class="btn" style="margin-top:8px" id="calc">Oblicz najlepszy zestaw</button>
+    <div id="calcResult"></div>
+    <h3 style="margin-top:20px">Dodaj własny produkt</h3>
+    <input id="pName" placeholder="Nazwa" style="margin-bottom:8px">
+    <input id="pPrice" type="number" step="0.01" placeholder="Cena zł" style="margin-bottom:8px">
+    <input id="pPoints" type="number" placeholder="Punkty żappsa" style="margin-bottom:8px">
+    <button class="btn btn-secondary" id="addProd">Dodaj</button>
+    <div id="prodList"></div>
+  </div>
+</div>
+
+<script>
+// 1. DARK MODE
+const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches? 'dark' : 'light');
+document.documentElement.setAttribute('data-theme', theme);
+document.getElementById('theme').onclick = () => {
+  const newTheme = document.documentElement.getAttribute('data-theme') === 'dark'? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+};
+
+// 2. ŁADOWANIE PROMOCJI Z JSON
+let OFFICIAL_PROMOS = [];
+async function loadPromos() {
+  document.getElementById('status').textContent = 'Pobieranie promocji...';
+  try {
+    const res = await fetch('./promos.json?t=' + Date.now()); //?t= omija cache
+    OFFICIAL_PROMOS = await res.json();
+    document.getElementById('status').textContent = `Załadowano ${OFFICIAL_PROMOS.length} promocji | Aktualizacja: ${new Date().toLocaleString('pl')}`;
+    renderPromos();
+  } catch(e) {
+    document.getElementById('status').textContent = 'Błąd: nie mogę pobrać promos.json';
+    OFFICIAL_PROMOS = [{nazwa:"Błąd ładowania",opis:"Sprawdź plik promos.json w repo",waznosc:"-",zrodlo:"system",status:"error"}];
+    renderPromos();
+  }
+}
+function renderPromos(){
+  document.getElementById('promos').innerHTML = OFFICIAL_PROMOS.map(p => `
+    <div class="card"><strong>${p.nazwa}</strong><p>${p.opis}</p>
+    <div style="margin-top:8px;font-size:14px">Ważne do: ${p.waznosc} | Źródło: ${p.zrodlo}</div>
+    <span class="badge ${p.status==='ok'?'badge-green':'badge-red'}">${p.status==='ok'?'Zweryfikowane':'Błąd'}</span></div>
+  `).join('');
+}
+document.getElementById('refresh').onclick = loadPromos;
+
+// 3. WERYFIKATOR
+const PHISHING_PATTERNS = [/dopłać/i,/BLIK/i,/potwierdź.*tożsamość/i,/1zł.*odbierz/i,/bit\.ly|tinyurl|t\.co/i,/zabbka|zabka-.*\.tk|\.xyz/i];
+document.getElementById('verify').onclick = () => {
+  const input = document.getElementById('codeInput').value.trim();
+  let risk = 0, reasons = [];
+  if(!input){document.getElementById('result').innerHTML='Wklej kod';return}
+  PHISHING_PATTERNS.forEach(p=>{if(p.test(input)){risk+=50;reasons.push('Podejrzany wzorzec: '+p)}});
+  if(!input.includes('zabka.pl') && input.includes('http')){risk+=30;reasons.push('Link nie prowadzi do zabka.pl')}
+  const isOfficial = OFFICIAL_PROMOS.some(p=>input.toLowerCase().includes(p.nazwa.toLowerCase().split(' ')[0]));
+  if(!isOfficial &&!input.includes('Żappka')){risk+=20;reasons.push('Brak na liście oficjalnych promocji')}
+
+  let color='green',text='Bezpieczny';
+  if(risk>=70){color='red';text='Wysokie ryzyko phishingu!'}
+  else if(risk>=30){color='yellow';text='Podejrzany - sprawdź w Żappce'}
+
+  document.getElementById('result').innerHTML = `
+    <div class="badge badge-${color}">${text}</div>
+    <div style="margin-top:8px">Ryzyko: ${risk}/100</div>
+    ${reasons.length?'<ul style="margin-top:8px">'+reasons.map(r=>`<li>${r}</li>`).join('')+'</ul>':''}
+  `;
+};
+document.getElementById('testSafe').onclick=()=>document.getElementById('codeInput').value='Sprawdź w Żappce: Pinsa za 1 żappsa do 09.06.2026';
+document.getElementById('testPhish').onclick=()=>document.getElementById('codeInput').value='http://zabka-wygrana.tk Wygrałeś 500zł! Dopłać 1zł BLIK';
+
+// 4. KALKULATOR ŻAPPSÓW
+let PRODUCTS = JSON.parse(localStorage.getItem('zabka_products')||'null') || [
+  {n:'Hot Dog',c:750,p:50},{n:'Pinsa',c:1299,p:80},{n:'Kawa',c:550,p:30},{n:'Red Bull',c:799,p:40},
+  {n:'Snickers',c:349,p:15},{n:'Woda',c:199,p:5},{n:'Zapiekanka',c:850,p:60},{n:'Magnum',c:699,p:35},
+  {n:'Chipsy',c:599,p:25},{n:'Baton Protein',c:450,p:20},{n:'Hortex',c:399,p:15},{n:'Kanapka',c:999,p:70},
+  {n:'Drożdżówka',c:250,p:10},{n:'Jogurt',c:329,p:12},{n:'Lion',c:299,p:10}
+];
+function saveProducts(){localStorage.setItem('zabka_products',JSON.stringify(PRODUCTS));renderProdList()}
+function renderProdList(){
+  document.getElementById('prodList').innerHTML='<table><tr><th>Produkt</th><th>Cena</th><th>Pkt</th></tr>'+
+    PRODUCTS.map(p=>`<tr><td>${p.n}</td><td>${(p.c/100).toFixed(2)}zł</td><td>${p.p}</td></tr>`).join('')+'</table>';
+}
+document.getElementById('addProd').onclick=()=>{
+  const n=document.getElementById('pName').value,p=parseInt(document.getElementById('pPoints').value),c=Math.round(parseFloat(document.getElementById('pPrice').value)*100);
+  if(n&&p&&c){PRODUCTS.push({n,c,p});saveProducts();document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pPoints').value=''}
+};
+document.getElementById('calc').onclick=()=>{
+  const budget=parseInt(document.getElementById('budget').value),n=PRODUCTS.length;
+  const dp=Array(n+1).fill().map(()=>Array(budget+1).fill(0));
+  for(let i=1;i<=n;i++){for(let w=0;w<=budget;w++){
+    if(PRODUCTS[i-1].c<=w) dp[i][w]=Math.max(dp[i-1][w],dp[i-1][w-PRODUCTS[i-1].c]+PRODUCTS[i-1].p);
+    else dp[i][w]=dp[i-1][w];
+  }}
+  let w=budget,res=[];
+  for(let i=n;i>0&&w>0;i--){if(dp[i][w]!==dp[i-1][w]){res.push(PRODUCTS[i-1]);w-=PRODUCTS[i-1].c}}
+  const cost=res.reduce((a,b)=>a+b.c,0),points=res.reduce((a,b)=>a+b.p,0);
+  document.getElementById('calcResult').innerHTML=`
+    <h3>Wynik dla ${(budget/100).toFixed(0)}zł:</h3>
+    <table><tr><th>Produkt</th><th>Cena</th><th>Pkt</th></tr>
+    ${res.map(p=>`<tr><td>${p.n}</td><td>${(p.c/100).toFixed(2)}zł</td><td>${p.p}</td></tr>`).join('')}
+    <tr style="font-weight:600"><td>SUMA</td><td>${(cost/100).toFixed(2)}zł</td><td>${points}</td></tr></table>
+    <p style="margin-top:8px">Zostało: ${((budget-cost)/100).toFixed(2)}zł | Efektywność: ${(points/(cost/100)).toFixed(2)} pkt/zł</p>
+    <p style="font-size:14px;color:#6b7280">1000 żappsów = 10zł zniżki w Żappce</p>
+  `;
+};
+
+// START
+loadPromos();renderProdList();
+document.getElementById('status').textContent+=' | Dashboard załadowany ✓';
+</script>
+</body>
+</html>
