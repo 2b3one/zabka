@@ -3,165 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Żabka Bezpieczny Dashboard Online</title>
+<title>Żabka Dashboard v2.1 - Online</title>
 <style>
-:root{--bg:#f5f5f5;--card:#fff;--text:#111;--green:#16a34a;--yellow:#eab308;--red:#dc2626;--border:#e5e5e5}
-[data-theme="dark"]{--bg:#111;--card:#1f1f1f;--text:#f5f5f5;--border:#333}
+:root{--bg:#f8fafc;--card:#fff;--text:#0f172a;--green:#16a34a;--border:#e2e8f0;--shadow:0 1px 3px rgba(0,0,0,.08);--accent:#f1f5f9}
+[data-theme="dark"]{--bg:#020617;--card:#0f172a;--text:#f1f5f9;--border:#1e293b;--accent:#1e293b}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);padding:16px;line-height:1.5}
-.container{max-width:1200px;margin:0 auto}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
-h1{font-size:28px;margin-bottom:8px}h2{font-size:20px;margin:16px 0 12px}
-.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
-.btn{background:var(--green);color:#fff;border:none;padding:12px 16px;border-radius:8px;cursor:pointer;font-size:16px;min-height:44px}
-.btn-secondary{background:#6b7280}.btn:hover{opacity:.9}
-input,select,textarea{width:100%;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:16px;min-height:44px}
-table{width:100%;border-collapse:collapse;margin-top:12px}th,td{padding:8px;text-align:left;border-bottom:1px solid var(--border)}
-.badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:600}
-.badge-green{background:#dcfce7;color:#166534}.badge-red{background:#fee2e2;color:#991b1b}.badge-yellow{background:#fef9c3;color:#854d0e}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px}
-.status{font-size:14px;color:#6b7280}
-@media(max-width:640px){.grid{grid-template-columns:1fr}}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);padding:16px;line-height:1.6}
+.container{max-width:1400px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
+h1{font-size:32px;margin-bottom:6px;font-weight:800}h2{font-size:22px;margin:20px 0 16px;font-weight:700}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(340px,1fr))}
+.btn{background:var(--green);color:#fff;border:none;padding:14px 22px;border-radius:12px;cursor:pointer;font-size:15px;min-height:48px;font-weight:600;transition:.2s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(22,163,74,.3)}.btn-secondary{background:#64748b}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+input,select,textarea{width:100%;padding:14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--text);font-size:15px;min-height:48px}
+.promo-card{display:flex;gap:14px;cursor:pointer;transition:.2s;border:1px solid transparent}
+.promo-card:hover{border-color:var(--green);transform:translateY(-2px)}
+.promo-thumb{width:90px;height:90px;border-radius:14px;object-fit:cover;background:var(--accent);flex-shrink:0}
+.promo-content{flex:1;min-width:0}
+.promo-title{font-weight:700;margin-bottom:6px;font-size:16px}
+.promo-desc{font-size:14px;color:#64748b;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.promo-meta{font-size:12px;margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.badge{padding:4px 10px;border-radius:8px;font-size:12px;font-weight:700}
+.badge-green{background:#dcfce7;color:#166534}.badge-red{background:#fee2e2;color:#991b1b}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;padding:20px;z-index:100;backdrop-filter:blur(4px)}
+.modal.show{display:flex}
+.modal-content{background:var(--card);border-radius:20px;max-width:700px;width:100%;max-height:90vh;overflow:auto;padding:32px;animation:slideIn.3s}
+@keyframes slideIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.modal-close{float:right;background:var(--accent);border:none;width:36px;height:36px;border-radius:50%;font-size:20px;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center}
+table{width:100%;border-collapse:collapse;margin-top:16px;font-size:14px}
+th,td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}th{font-weight:700;background:var(--accent)}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:16px}
+.status{font-size:14px;color:#64748b;background:var(--accent);padding:8px 16px;border-radius:20px}
+.search-box{position:relative;margin-bottom:16px}
+.search-box input{padding-left:44px}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#64748b}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.promo-thumb{width:70px;height:70px}h1{font-size:24px}}
 </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <div><h1>🐸 Żabka Bezpieczny Dashboard</h1><div class="status" id="status">Ładowanie...</div></div>
-    <button class="btn btn-secondary" id="theme">🌓 Tryb</button>
+    <div><h1>🐸 Żabka Dashboard Online</h1><div class="status" id="status">Inicjalizacja...</div></div>
+    <button class="btn btn-secondary" id="theme">🌓 Motyw</button>
   </div>
 
   <div class="card">
     <h2>Oficjalne Promocje Żabki</h2>
-    <button class="btn" id="refresh">🔄 Odśwież dane</button>
-    <div id="promos" class="grid" style="margin-top:16px"></div>
+    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn" id="refresh">🔄 Odśwież dane</button>
+      <div class="search-box" style="flex:1;min-width:200px">
+        <span class="search-icon">🔍</span>
+        <input id="searchPromo" placeholder="Szukaj promocji...">
+      </div>
+    </div>
+    <div id="promos" class="grid"></div>
   </div>
 
   <div class="card">
     <h2>Weryfikator Kodów z Forów</h2>
-    <textarea id="codeInput" rows="3" placeholder="Wklej kod lub link z FB/IG/Pepper..."></textarea>
-    <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
-      <button class="btn" id="verify">Zweryfikuj</button>
-      <button class="btn btn-secondary" id="testSafe">Test bezpieczny</button>
-      <button class="btn btn-secondary" id="testPhish">Test phishing</button>
+    <textarea id="codeInput" rows="3" placeholder="Wklej kod, link lub treść z FB/IG/Pepper.pl..."></textarea>
+    <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+      <button class="btn" id="verify">✓ Zweryfikuj ryzyko</button>
+      <button class="btn btn-secondary" id="testSafe">Test: Bezpieczny</button>
+      <button class="btn btn-secondary" id="testPhish">Test: Phishing</button>
     </div>
     <div id="result" style="margin-top:16px"></div>
   </div>
 
   <div class="card">
-    <h2>Kalkulator Optymalizacji Żappsów</h2>
-    <select id="budget"><option value="1000">10 zł</option><option value="2000">20 zł</option><option value="3000">30 zł</option><option value="4000">40 zł</option><option value="5000">50 zł</option></select>
-    <button class="btn" style="margin-top:8px" id="calc">Oblicz najlepszy zestaw</button>
+    <h2>Kalkulator Żappsów - Algorytm Plecakowy</h2>
+    <div style="display:grid;gap:12px;grid-template-columns:2fr 1fr;align-items:end;margin-bottom:16px">
+      <div>
+        <label style="font-size:14px;font-weight:600;display:block;margin-bottom:6px">Twój budżet</label>
+        <select id="budget">
+          <option value="1000">10 zł</option><option value="2000">20 zł</option>
+          <option value="3000">30 zł</option><option value="5000">50 zł</option>
+          <option value="10000">100 zł</option>
+        </select>
+      </div>
+      <button class="btn" id="calc">Oblicz najlepszy zestaw</button>
+    </div>
     <div id="calcResult"></div>
-    <h3 style="margin-top:20px">Dodaj własny produkt</h3>
-    <input id="pName" placeholder="Nazwa" style="margin-bottom:8px">
-    <input id="pPrice" type="number" step="0.01" placeholder="Cena zł" style="margin-bottom:8px">
-    <input id="pPoints" type="number" placeholder="Punkty żappsa" style="margin-bottom:8px">
-    <button class="btn btn-secondary" id="addProd">Dodaj</button>
-    <div id="prodList"></div>
+    <details style="margin-top:20px">
+      <summary style="cursor:pointer;font-weight:700;font-size:15px">➕ Dodaj własny produkt do bazy</summary>
+      <div style="margin-top:16px;display:grid;gap:10px;grid-template-columns:2fr 1fr 1fr auto">
+        <input id="pName" placeholder="Nazwa produktu">
+        <input id="pPrice" type="number" step="0.01" min="0.01" placeholder="Cena zł">
+        <input id="pPoints" type="number" min="1" placeholder="Punkty">
+        <button class="btn btn-secondary" id="addProd">Dodaj</button>
+      </div>
+    </details>
+    <div id="prodCount" style="margin-top:16px;font-size:13px;color:#64748b;background:var(--accent);padding:12px;border-radius:10px"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="closeModal">×</button>
+    <div id="modalBody"></div>
   </div>
 </div>
 
 <script>
-// 1. DARK MODE
-const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches? 'dark' : 'light');
-document.documentElement.setAttribute('data-theme', theme);
-document.getElementById('theme').onclick = () => {
-  const newTheme = document.documentElement.getAttribute('data-theme') === 'dark'? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', newTheme);
-  localStorage.setItem('theme', newTheme);
+// UTIL: escape HTML żeby uniknąć XSS
+const escapeHtml = (str) => {
+  const div = document.createElement('div');
+  div.textContent = str?? '';
+  return div.innerHTML;
 };
 
-// 2. ŁADOWANIE PROMOCJI Z JSON
-let OFFICIAL_PROMOS = [];
-async function loadPromos() {
-  document.getElementById('status').textContent = 'Pobieranie promocji...';
-  try {
-    const res = await fetch('./promos.json?t=' + Date.now()); //?t= omija cache
-    OFFICIAL_PROMOS = await res.json();
-    document.getElementById('status').textContent = `Załadowano ${OFFICIAL_PROMOS.length} promocji | Aktualizacja: ${new Date().toLocaleString('pl')}`;
+// THEME
+const theme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme: dark)').matches? 'dark':'light');
+document.documentElement.setAttribute('data-theme', theme);
+document.getElementById('theme').onclick = () => {
+  const t = document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',t);localStorage.setItem('theme',t);
+};
+
+// PROMOS
+let PROMOS = [], FILTERED_PROMOS = [];
+async function loadPromos(){
+  const statusEl = document.getElementById('status');
+  const promosEl = document.getElementById('promos');
+  statusEl.textContent = 'Pobieranie promocji...';
+  promosEl.innerHTML = '<div style="text-align:center;color:#64748b">Ładowanie...</div>';
+  try{
+    const res = await fetch('./promos.json?t='+Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    PROMOS = await res.json();
+    FILTERED_PROMOS = [...PROMOS];
+    statusEl.textContent = `✓ ${PROMOS.length} promocji | Aktualizacja: ${new Date().toLocaleString('pl')}`;
     renderPromos();
-  } catch(e) {
-    document.getElementById('status').textContent = 'Błąd: nie mogę pobrać promos.json';
-    OFFICIAL_PROMOS = [{nazwa:"Błąd ładowania",opis:"Sprawdź plik promos.json w repo",waznosc:"-",zrodlo:"system",status:"error"}];
-    renderPromos();
+  }catch(e){
+    statusEl.textContent = '❌ Błąd: brak promos.json lub błąd sieci';
+    promosEl.innerHTML = '<div style="text-align:center;color:#dc2626">Nie udało się załadować promocji. Sprawdź czy plik promos.json istnieje.</div>';
   }
 }
 function renderPromos(){
-  document.getElementById('promos').innerHTML = OFFICIAL_PROMOS.map(p => `
-    <div class="card"><strong>${p.nazwa}</strong><p>${p.opis}</p>
-    <div style="margin-top:8px;font-size:14px">Ważne do: ${p.waznosc} | Źródło: ${p.zrodlo}</div>
-    <span class="badge ${p.status==='ok'?'badge-green':'badge-red'}">${p.status==='ok'?'Zweryfikowane':'Błąd'}</span></div>
+  if (FILTERED_PROMOS.length === 0) {
+    document.getElementById('promos').innerHTML = '<div style="text-align:center;color:#64748b">Brak promocji pasujących do wyszukiwania</div>';
+    return;
+  }
+  document.getElementById('promos').innerHTML = FILTERED_PROMOS.map((p,i)=>`
+    <div class="promo-card card" onclick="showPromo(${PROMOS.indexOf(p)})">
+      <img class="promo-thumb" src="${escapeHtml(p.thumb)||'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2290%22 height=%2290%22%3E%3Crect fill=%22%23e2e8f0%22 width=%2290%22 height=%2290%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2230%22%3E🐸%3C/text%3E%3C/svg%3E'}" alt="${escapeHtml(p.nazwa)}" loading="lazy">
+      <div class="promo-content">
+        <div class="promo-title">${escapeHtml(p.nazwa)}</div>
+        <div class="promo-desc">${escapeHtml(p.opis)}</div>
+        <div class="promo-meta">
+          <span class="badge badge-green">Do ${escapeHtml(p.waznosc)}</span>
+          <span style="color:#64748b">${escapeHtml(p.zrodlo)}</span>
+        </div>
+      </div>
+    </div>
   `).join('');
 }
+window.showPromo = (i) => {
+  const p = PROMOS[i];
+  const imgHtml = p.thumb? `<img src="${escapeHtml(p.thumb)}" style="width:100%;border-radius:16px;margin-bottom:20px;max-height:350px;object-fit:cover;background:var(--accent)" alt="${escapeHtml(p.nazwa)}">` : '';
+  document.getElementById('modalBody').innerHTML = `
+    ${imgHtml}
+    <h2 style="margin-bottom:16px">${escapeHtml(p.nazwa)}</h2>
+    <p style="line-height:1.7;font-size:16px;margin-bottom:20px">${escapeHtml(p.pelny_opis||p.opis)}</p>
+    <div style="background:var(--accent);padding:16px;border-radius:12px;margin:20px 0">
+      <strong style="display:block;margin-bottom:8px">📋 Jak skorzystać:</strong>
+      <div style="white-space:pre-line">${escapeHtml(p.jak_skorzystac||'Aktywuj kupon w aplikacji Żappka przed zakupem')}</div>
+    </div>
+    <div style="display:flex;gap:16px;font-size:14px;color:#64748b;flex-wrap:wrap">
+      <span>📅 Ważność: <strong>${escapeHtml(p.waznosc)}</strong></span>
+      <span>🔗 Źródło: <strong>${escapeHtml(p.zrodlo)}</strong></span>
+      ${p.link?`<a href="${escapeHtml(p.link)}" target="_blank" rel="noopener noreferrer" style="color:var(--green);font-weight:600">Regulamin →</a>`:''}
+    </div>
+  `;
+  document.getElementById('modal').classList.add('show');
+};
+document.getElementById('closeModal').onclick = ()=>document.getElementById('modal').classList.remove('show');
+document.getElementById('modal').onclick = (e)=>{if(e.target.id==='modal')document.getElementById('modal').classList.remove('show')};
+document.addEventListener('keydown', (e) => { // FIX: ESC zamyka modal
+  if (e.key === 'Escape') document.getElementById('modal').classList.remove('show');
+});
 document.getElementById('refresh').onclick = loadPromos;
+document.getElementById('searchPromo').oninput = (e)=>{
+  const q = e.target.value.toLowerCase();
+  FILTERED_PROMOS = PROMOS.filter(p=>p.nazwa.toLowerCase().includes(q)||p.opis.toLowerCase().includes(q));
+  renderPromos();
+};
 
-// 3. WERYFIKATOR
-const PHISHING_PATTERNS = [/dopłać/i,/BLIK/i,/potwierdź.*tożsamość/i,/1zł.*odbierz/i,/bit\.ly|tinyurl|t\.co/i,/zabbka|zabka-.*\.tk|\.xyz/i];
+// VERIFIER
+const PHISHING_RULES = [
+  {regex: /dopłać|doplata/i, name: 'Żądanie dopłaty'},
+  {regex: /BLIK/i, name: 'Użycie BLIK'},
+  {regex: /potwierdź.*tożsamość|weryfikacj/i, name: 'Prośba o weryfikację tożsamości'},
+  {regex: /1zł.*odbierz|wygrana/i, name: 'Fałszywa wygrana za 1zł'},
+  {regex: /bit\.ly|tinyurl|t\.co|cut\.ly/i, name: 'Skrócony link'},
+  {regex: /zabbka|żappka|zabka-.*\.(tk|ml|ga|cf)|promocja-zabka/i, name: 'Podejrzana domena'},
+  {regex: /podaj.*hasło|login/i, name: 'Prośba o hasło/login'}
+];
 document.getElementById('verify').onclick = () => {
   const input = document.getElementById('codeInput').value.trim();
-  let risk = 0, reasons = [];
-  if(!input){document.getElementById('result').innerHTML='Wklej kod';return}
-  PHISHING_PATTERNS.forEach(p=>{if(p.test(input)){risk+=50;reasons.push('Podejrzany wzorzec: '+p)}});
-  if(!input.includes('zabka.pl') && input.includes('http')){risk+=30;reasons.push('Link nie prowadzi do zabka.pl')}
-  const isOfficial = OFFICIAL_PROMOS.some(p=>input.toLowerCase().includes(p.nazwa.toLowerCase().split(' ')[0]));
-  if(!isOfficial &&!input.includes('Żappka')){risk+=20;reasons.push('Brak na liście oficjalnych promocji')}
+  if(!input){document.getElementById('result').innerHTML='<div style="color:#dc2626">Wklej kod lub link do weryfikacji</div>';return}
+  let risk=0,reasons=[];
+  PHISHING_RULES.forEach(rule=>{if(rule.regex.test(input)){risk+=50;reasons.push(rule.name)}}); // FIX: czytelne nazwy
+  if(!input.includes('zabka.pl')&&input.match(/https?:\/\//)){risk+=35;reasons.push('Link nie prowadzi do oficjalnej domeny zabka.pl')}
+  if(!PROMOS.some(p=>input.toLowerCase().includes(p.nazwa.toLowerCase().slice(0,10)))&&!input.includes('Żappka')){risk+=15;reasons.push('Brak na liście oficjalnych promocji')}
 
-  let color='green',text='Bezpieczny';
-  if(risk>=70){color='red';text='Wysokie ryzyko phishingu!'}
-  else if(risk>=30){color='yellow';text='Podejrzany - sprawdź w Żappce'}
+  let color='#16a34a',text='BEZPIECZNY',emoji='✅';
+  if(risk>=70){color='#dc2626';text='WYSOKIE RYZYKO PHISHINGU';emoji='🚨'}
+  else if(risk>=35){color='#eab308';text='PODEJRZANY';emoji='⚠️'}
 
   document.getElementById('result').innerHTML = `
-    <div class="badge badge-${color}">${text}</div>
-    <div style="margin-top:8px">Ryzyko: ${risk}/100</div>
-    ${reasons.length?'<ul style="margin-top:8px">'+reasons.map(r=>`<li>${r}</li>`).join('')+'</ul>':''}
+    <div style="background:${color}15;border:2px solid ${color};padding:20px;border-radius:12px">
+      <div style="font-size:20px;font-weight:800;color:${color};margin-bottom:8px">${emoji} ${text}</div>
+      <div style="font-size:14px;margin-bottom:12px">Poziom ryzyka: <strong>${risk}/100</strong></div>
+      ${reasons.length?'<div style="font-size:14px"><strong>Wykryte zagrożenia:</strong><ul style="margin:8px 0 0 20px">'+reasons.map(r=>`<li>${escapeHtml(r)}</li>`).join('')+'</ul></div>':''}
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid ${color}40;font-size:13px">
+        <strong>Pamiętaj:</strong> Żabka nie wysyła kodów SMS. 95% promocji to kupony w Żappce. Nigdy nie dopłacaj BLIKiem poza kasą.
+      </div>
+    </div>
   `;
 };
-document.getElementById('testSafe').onclick=()=>document.getElementById('codeInput').value='Sprawdź w Żappce: Pinsa za 1 żappsa do 09.06.2026';
-document.getElementById('testPhish').onclick=()=>document.getElementById('codeInput').value='http://zabka-wygrana.tk Wygrałeś 500zł! Dopłać 1zł BLIK';
+document.getElementById('testSafe').onclick=()=>document.getElementById('codeInput').value='Sprawdź w Żappce: Pinsa za 1 żappsa do 09.06.2026. Aktywuj w Kupony i nagrody.';
+document.getElementById('testPhish').onclick=()=>document.getElementById('codeInput').value='http://zabka-bonus.tk Gratulacje! Wygrałeś 500zł. Dopłać 1zł BLIK aby odebrać nagrodę w 24h.';
 
-// 4. KALKULATOR ŻAPPSÓW
-let PRODUCTS = JSON.parse(localStorage.getItem('zabka_products')||'null') || [
-  {n:'Hot Dog',c:750,p:50},{n:'Pinsa',c:1299,p:80},{n:'Kawa',c:550,p:30},{n:'Red Bull',c:799,p:40},
-  {n:'Snickers',c:349,p:15},{n:'Woda',c:199,p:5},{n:'Zapiekanka',c:850,p:60},{n:'Magnum',c:699,p:35},
-  {n:'Chipsy',c:599,p:25},{n:'Baton Protein',c:450,p:20},{n:'Hortex',c:399,p:15},{n:'Kanapka',c:999,p:70},
-  {n:'Drożdżówka',c:250,p:10},{n:'Jogurt',c:329,p:12},{n:'Lion',c:299,p:10}
-];
-function saveProducts(){localStorage.setItem('zabka_products',JSON.stringify(PRODUCTS));renderProdList()}
-function renderProdList(){
-  document.getElementById('prodList').innerHTML='<table><tr><th>Produkt</th><th>Cena</th><th>Pkt</th></tr>'+
-    PRODUCTS.map(p=>`<tr><td>${p.n}</td><td>${(p.c/100).toFixed(2)}zł</td><td>${p.p}</td></tr>`).join('')+'</table>';
+// PRODUCTS + KNAPSACK
+let PRODUCTS = [];
+async function loadProducts(){
+  try{
+    const res = await fetch('./products.json?t='+Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    PRODUCTS = await res.json();
+    document.getElementById('prodCount').textContent = `📦 Załadowano ${PRODUCTS.length} produktów z bazy | Ostatnia aktualizacja: ${new Date().toLocaleDateString('pl')}`;
+  }catch(e){
+    PRODUCTS = JSON.parse(localStorage.getItem('zabka_products')||'[]');
+    document.getElementById('prodCount').textContent = `📦 ${PRODUCTS.length} produktów lokalnych | Dodaj products.json do repo`;
+  }
 }
-document.getElementById('addProd').onclick=()=>{
-  const n=document.getElementById('pName').value,p=parseInt(document.getElementById('pPoints').value),c=Math.round(parseFloat(document.getElementById('pPrice').value)*100);
-  if(n&&p&&c){PRODUCTS.push({n,c,p});saveProducts();document.getElementById('pName').value='';document.getElementById('pPrice').value='';document.getElementById('pPoints').value=''}
-};
-document.getElementById('calc').onclick=()=>{
-  const budget=parseInt(document.getElementById('budget').value),n=PRODUCTS.length;
-  const dp=Array(n+1).fill().map(()=>Array(budget+1).fill(0));
-  for(let i=1;i<=n;i++){for(let w=0;w<=budget;w++){
-    if(PRODUCTS[i-1].c<=w) dp[i][w]=Math.max(dp[i-1][w],dp[i-1][w-PRODUCTS[i-1].c]+PRODUCTS[i-1].p);
-    else dp[i][w]=dp[i-1][w];
-  }}
+document.getElementById('calc').onclick = () => {
+  const budget = parseInt(document.getElementById('budget').value);
+  const n = PRODUCTS.length;
+  if(n===0){alert('Brak produktów w bazie!');return}
+  const dp = Array(n+1).fill().map(()=>Array(budget+1).fill(0));
+  for(let i=1;i<=n;i++){
+    for(let w=0;w<=budget;w++){
+      if(PRODUCTS[i-1].c<=w) dp[i][w]=Math.max(dp[i-1][w],dp[i-1][w-PRODUCTS[i-1].c]+PRODUCTS[i-1].p);
+      else dp[i][w]=dp[i-1][w];
+    }
+  }
   let w=budget,res=[];
   for(let i=n;i>0&&w>0;i--){if(dp[i][w]!==dp[i-1][w]){res.push(PRODUCTS[i-1]);w-=PRODUCTS[i-1].c}}
   const cost=res.reduce((a,b)=>a+b.c,0),points=res.reduce((a,b)=>a+b.p,0);
+  const efficiency = cost > 0? (points/(cost/100)).toFixed(1) : 0; // FIX: dzielenie przez 0
   document.getElementById('calcResult').innerHTML=`
-    <h3>Wynik dla ${(budget/100).toFixed(0)}zł:</h3>
-    <table><tr><th>Produkt</th><th>Cena</th><th>Pkt</th></tr>
-    ${res.map(p=>`<tr><td>${p.n}</td><td>${(p.c/100).toFixed(2)}zł</td><td>${p.p}</td></tr>`).join('')}
-    <tr style="font-weight:600"><td>SUMA</td><td>${(cost/100).toFixed(2)}zł</td><td>${points}</td></tr></table>
-    <p style="margin-top:8px">Zostało: ${((budget-cost)/100).toFixed(2)}zł | Efektywność: ${(points/(cost/100)).toFixed(2)} pkt/zł</p>
-    <p style="font-size:14px;color:#6b7280">1000 żappsów = 10zł zniżki w Żappce</p>
+    <div style="background:var(--accent);padding:20px;border-radius:14px;margin-top:16px">
+      <h3 style="margin-bottom:16px">🎯 Optymalny zestaw za ${(budget/100).toFixed(0)}zł</h3>
+      <table>
+        <thead><tr><th>Produkt</th><th>Cena</th><th>Punkty</th></tr></thead>
+        <tbody>${res.map(p=>`<tr><td>${escapeHtml(p.n)}</td><td>${(p.c/100).toFixed(2)}zł</td><td><strong>${p.p}</strong></td></tr>`).join('')}</tbody>
+        <tfoot><tr style="font-weight:800;background:var(--card)"><td>SUMA</td><td>${(cost/100).toFixed(2)}zł</td><td>${points} pkt</td></tr></tfoot>
+      </table>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:16px;text-align:center">
+        <div><div style="font-size:12px;color:#64748b">Zostało</div><div style="font-size:20px;font-weight:700">${((budget-cost)/100).toFixed(2)}zł</div></div>
+        <div><div style="font-size:12px;color:#64748b">Efektywność</div><div style="font-size:20px;font-weight:700">${efficiency} pkt/zł</div></div>
+        <div><div style="font-size:12px;color:#64748b">Wartość</div><div style="font-size:20px;font-weight:700">${(points/100).toFixed(2)}zł</div></div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;color:#64748b;text-align:center">1000 żappsów = 10zł zniżki przy kasie z Żappką</div>
+    </div>
   `;
 };
+document.getElementById('addProd').onclick=()=>{
+  const n=pName.value.trim(),p=parseInt(pPoints.value),c=Math.round(parseFloat(pPrice.value)*100);
+  if(!n ||!p || p <= 0 ||!c || c <= 0){alert('Uzupełnij wszystkie pola poprawnymi wartościami');return} // FIX: lepsza walidacja
+  PRODUCTS.push({n,c,p});localStorage.setItem('zabka_products',JSON.stringify(PRODUCTS));pName.value=pPrice.value=pPoints.value='';loadProducts();alert('Dodano!')
+};
 
-// START
-loadPromos();renderProdList();
-const res = await fetch('./promos.json?t=' + Date.now());
-const data = await res.json();
-OFFICIAL_PROMOS = Array.isArray(data) ? data : data.promos; // obsługuje oba formaty
-document.getElementById('status').textContent+=' | Dashboard załadowany ✓';
+// INIT - FIX: odpal po załadowaniu DOM
+document.addEventListener('DOMContentLoaded', () => {
+  loadPromos();
+  loadProducts();
+});
 </script>
 </body>
 </html>
