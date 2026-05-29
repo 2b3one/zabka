@@ -158,6 +158,9 @@ document.getElementById('calc').onclick=()=>{
 
 // START
 loadPromos();renderProdList();
+const res = await fetch('./promos.json?t=' + Date.now());
+const data = await res.json();
+OFFICIAL_PROMOS = Array.isArray(data) ? data : data.promos; // obsługuje oba formaty
 document.getElementById('status').textContent+=' | Dashboard załadowany ✓';
 </script>
 </body>
